@@ -456,6 +456,7 @@ def parse_args():
     parser.add_argument("--train-files", type=str, help="Training Filenames", default='/home/alexandre.lopes1/monodepth_train/train')
     parser.add_argument("--val-files", type=str, help="Validation Filenames", default='/home/alexandre.lopes1/monodepth_train/val')
     parser.add_argument("--png", help="if data is png, activate --png", action="store_true")    
+    parser.add_argument("--save-path", type=str, help="Path to save models", default="models")
 
     return parser.parse_args()
 
@@ -464,9 +465,6 @@ def parse_args():
 
 if __name__ == '__main__':
     opt = parse_args()
-    # import pickle
-    # with open('opt.pkl', 'wb') as handle:
-    #     pickle.dump(opt, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
     trainer = Trainer(opt)
     trainer.process()
