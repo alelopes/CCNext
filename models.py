@@ -432,8 +432,8 @@ class IDEP_Skip_Dual(nn.Module):
             x1 = upsample(x1)  
             
             if i in self.scales:
-                self.outputs[("disp0", i)] = self.sigmoid(self.convs[("dispconv0", i)](x0))
-                self.outputs[("disp1", i)] = self.sigmoid(self.convs[("dispconv1", i)](x1))
+                self.outputs[("disp", i)] = self.sigmoid(self.convs[("dispconv0", i)](x0))
+                self.outputs[("disp_s", i)] = self.sigmoid(self.convs[("dispconv1", i)](x1))
 
         return self.outputs#, mid1, mid2      
     
@@ -488,7 +488,8 @@ class IDEP_Skip(nn.Module):
             self.convs[("dispconv0", s)] = Conv3x3(self.num_ch_dec[s], 1)
 
         self.sigmoid = nn.Sigmoid()
-        self.decoder = nn.ModuleList(list(self.mix_conv.values()) + list(self.convs.values()))
+        self.decoder = nn.ModuleList(list(self.convs.values()))
+        self.middle = nn.ModuleList(list(self.mix_conv.values()))
 
     def forward(self, features):
         self.outputs = {}
@@ -515,7 +516,7 @@ class IDEP_Skip(nn.Module):
             x0 = upsample(x0)  # x0 torch.Size([12,40])            
             
             if i in self.scales:
-                self.outputs[("disp0", i)] = self.sigmoid(self.convs[("dispconv0", i)](x0))
+                self.outputs[("disp", i)] = self.sigmoid(self.convs[("dispconv0", i)](x0))
 
         return self.outputs        
     
