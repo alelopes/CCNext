@@ -49,7 +49,6 @@ def evaluate_model(args):
     MIN_DEPTH = 1e-3
     MAX_DEPTH = 80
 
-
     height = args.height
     width = args.width
     batch_size = args.batch_size
@@ -64,8 +63,8 @@ def evaluate_model(args):
     ccnext_enc = models.ConvnextCAEncoder(sizes, device, args.window_size)
     idep = models.IDEP_Skip_Dual(np.array([32, 64, 128, 256, 512]))
 
-    ccnext_enc.load_state_dict(torch.load(f"{args.model_path}/{args.encoder_path}").to("cpu"))
-    idep.load_state_dict(torch.load(f"{args.model_path}/{args.decoder_path}").to("cpu"))
+    ccnext_enc.load_state_dict(torch.load(f"{args.model_path}/{args.encoder_path}"))
+    idep.load_state_dict(torch.load(f"{args.model_path}/{args.decoder_path}"))
 
     ccnext_enc.eval()
     idep.eval()
@@ -79,7 +78,6 @@ def evaluate_model(args):
 
     dataloader = DataLoader(dataset, batch_size, shuffle=False, num_workers=1, pin_memory=True, drop_last=False)
 
-    num_layers = args.num_layers
     min_depth = args.min_depth
     max_depth = args.max_depth
     
@@ -170,21 +168,21 @@ def evaluate_model(args):
 
 def get_parser():
     parser = argparse.ArgumentParser(description='Evaluate KITTI model')
-    parser.add_argument('--encoder_path', type=str, default="encoder.pth", help='Path to the encoder model')
-    parser.add_argument('--decoder_path', type=str, default="decoder.pth", help='Path to the decoder model')
+    parser.add_argument('--encoder-path', type=str, default="encoder.pth", help='Path to the encoder model')
+    parser.add_argument('--decoder-path', type=str, default="decoder.pth", help='Path to the decoder model')
 
     parser.add_argument("--window-size", type=float, help="Window Size for Cross Attention", default=0.26)
     parser.add_argument('--filenames', type=str, required=True, help='Path to the testing filenames')
-    parser.add_argument('--dataset_path', type=str, required=True, help='Path to the KITTI dataset')
-    parser.add_argument('--model_path', type=str, required=True, help='Path to the model')
-    parser.add_argument('--batch_size', type=int, default=1, help='Batch size')
+    parser.add_argument('--dataset-path', type=str, required=True, help='Path to the KITTI dataset')
+    parser.add_argument('--model-path', type=str, required=True, help='Path to the model')
+    parser.add_argument('--batch-size', type=int, default=1, help='Batch size')
     parser.add_argument('--height', type=int, default=192*2, help='Image height')
     parser.add_argument('--width', type=int, default=640*2, help='Image width')
     parser.add_argument('--device', type=str, default='cuda:0', help='Device to use')
-    parser.add_argument('--min_depth', type=float, default=0.1, help='Minimum depth')
-    parser.add_argument('--max_depth', type=float, default=100, help='Maximum depth')
-    parser.add_argument('--gt_path', type=str, required=True, help='Path to ground truth depths')
-    parser.add_argument('--eval_split', type=str, default='eigen_gargcrop', help='Evaluation split')
+    parser.add_argument('--min-depth', type=float, default=0.1, help='Minimum depth')
+    parser.add_argument('--max-depth', type=float, default=100, help='Maximum depth')
+    parser.add_argument('--gt-path', type=str, required=True, help='Path to ground truth depths')
+    parser.add_argument('--eval-split', type=str, default='eigen_gargcrop', help='Evaluation split')
     return parser
 
 
