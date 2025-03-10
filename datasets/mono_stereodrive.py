@@ -49,7 +49,8 @@ class MonoStereoDataset(data.Dataset):
                  frame_idxs,
                  num_scales,
                  is_train=False,
-                 img_ext='.jpg'):
+                 img_ext='.jpg',
+                 is_test=False):
         super(MonoStereoDataset, self).__init__()
 
         self.data_path = data_path
@@ -63,6 +64,7 @@ class MonoStereoDataset(data.Dataset):
         self.frame_idxs = frame_idxs
 
         self.is_train = is_train
+        self.is_test = is_test
         self.img_ext = img_ext
 
         self.loader = pil_loader
@@ -263,8 +265,12 @@ class MonoStereoDataset(data.Dataset):
             
             if self.is_train:
                 inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
+                # inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
+            elif self.is_test:
+                inputs["depth_gt"] = torch.from_numpy(inputs["depth_gt"])
             else:
                 inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
+                # inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
 
 
         if "s" in self.frame_idxs:
