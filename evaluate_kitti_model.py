@@ -61,7 +61,11 @@ def evaluate_model(args):
     sizes = (batch_size, height, width)
 
     ccnext_enc = models.ConvnextCAEncoder(sizes, device, args.window_size)
-    idep = models.IDEP_Skip_Dual(np.array([32, 64, 128, 256, 512]))
+
+    if args.reduced_decoder:
+        idep = models.IDEP_Skip(np.array([32, 64, 128, 256, 512]))
+    else:
+        idep = models.IDEP_Skip_Dual(np.array([32, 64, 128, 256, 512]))
 
     ccnext_enc.load_state_dict(torch.load(f"{args.model_path}/{args.encoder_path}"))
     idep.load_state_dict(torch.load(f"{args.model_path}/{args.decoder_path}"))
@@ -173,16 +177,18 @@ def get_parser():
 
     parser.add_argument("--window-size", type=float, help="Window Size for Cross Attention", default=0.26)
     parser.add_argument('--filenames', type=str, required=True, help='Path to the testing filenames')
-    parser.add_argument('--dataset-path', type=str, required=True, help='Path to the KITTI dataset')
+    parser.add_argument('--dataset-path', type=str, required=True, help='Path to the KITTI Raw dataset')
     parser.add_argument('--model-path', type=str, required=True, help='Path to the model')
     parser.add_argument('--batch-size', type=int, default=1, help='Batch size')
-    parser.add_argument('--height', type=int, default=192*2, help='Image height')
-    parser.add_argument('--width', type=int, default=640*2, help='Image width')
+    parser.add_argument('--height', type=int, default=22, help='Image height')
+    parser.add_argument('--width', type=int, default=488, help='Image width')
     parser.add_argument('--device', type=str, default='cuda:0', help='Device to use')
     parser.add_argument('--min-depth', type=float, default=0.1, help='Minimum depth')
     parser.add_argument('--max-depth', type=float, default=100, help='Maximum depth')
     parser.add_argument('--gt-path', type=str, required=True, help='Path to ground truth depths')
     parser.add_argument('--eval-split', type=str, default='eigen_gargcrop', help='Evaluation split')
+    parser.add_argument('--reduced-decoder', action='store_true', help='Use Single Decoder network instead of two Output Decoders')
+
     return parser
 
 

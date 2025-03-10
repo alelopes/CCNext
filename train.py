@@ -44,12 +44,19 @@ class Trainer:
         train_filenames = readlines(opt.train_files)
         val_filenames = readlines(opt.val_files)
         frame_ids = [0, 's']
-        scales = [0,1,2,3]
         ext = ".png" if opt.png else ".jpg"
-        ext=".jpg"
+        scales = [0, 1, 2, 3]
+        
+        if opt.dataset == "KITTI":
+            train_set = dataset(opt.data_path, train_filenames, opt.height, opt.width, frame_ids, 4, is_train=True, img_ext=ext)
+            val_set = dataset(opt.data_path, val_filenames, opt.height, opt.width, frame_ids, 4, is_train=False, img_ext=ext)
+        elif opt.dataset == "DrivingStereo":
+            # we supose a fixed structure for DrivingStereo folder. Inside data_path, there will be a subfolder for images and a subfolder for depth.
+            # The subfolder for images will contain a subfolder for left ('<folder>/train-left-image') and right ('<folder>/train-right-image') images.
+            # The subfolder for depth will contain the depths extracted from the dataset.
+            train_set = dataset(os.path.join(opt.data_path, opt.drivingstereo_train_images), os.path.join(opt.data_path, opt.drivingstereo_train_depth), train_filenames, opt.height, opt.width, frame_ids, 4, is_train=True, img_ext=ext)
+            val_set = dataset(os.path.join(opt.data_path, opt.drivingstereo_val_images), os.path.join(opt.data_path, opt.drivingstereo_val_depth), val_filenames, opt.height, opt.width, frame_ids, 4, is_train=False, img_ext=ext)
 
-        train_set = dataset(opt.data_path, train_filenames, opt.height, opt.width, frame_ids, 4, is_train=True, img_ext=ext)
-        val_set = dataset(opt.data_path, val_filenames, opt.height, opt.width, frame_ids, 4, is_train=False, img_ext=ext)
 
         train_loader = DataLoader(train_set, opt.batch_size, True, num_workers=opt.workers, pin_memory=False, drop_last=True)
         val_loader = DataLoader(val_set, opt.batch_size, True, num_workers=opt.workers, pin_memory=False, drop_last=True)
@@ -375,7 +382,6 @@ class Trainer:
 
                 if idx>=(len(self.val_loader)-3):
                     metrics = self.depth_metrics(batch, pred_disp, is_print=True)
-                    print("abs rel", abs_rel_acc/idxs)
                 else:
                     metrics = self.depth_metrics(batch, pred_disp, is_print=False)
 
@@ -439,7 +445,7 @@ def parse_args():
     list_of_datasets = ["KITTI", "DrivingStereo"]
 
     parser.add_argument('--device', type=int, help='cuda device, i.e. 0 or 0,1,2,3 or cpu (-1)', default=0, choices=list_of_devices)
-    parser.add_argument('--data-path', type=str, default='yolo7.pt', help='Your Dataset Path')
+    parser.add_argument('--data-path', type=str, help='Your Dataset Path')
     parser.add_argument('--dataset', type=str, default='KITTI', help='Your Training Dataset', choices=list_of_datasets)
     parser.add_argument('--epochs', type=int, default=15)
     parser.add_argument('--batch-size', type=int, default=8, help='total batch size for all GPUs')
@@ -457,6 +463,12 @@ def parse_args():
     parser.add_argument("--val-files", type=str, help="Validation Filenames", default='/home/alexandre.lopes1/monodepth_train/val')
     parser.add_argument("--png", help="if data is png, activate --png", action="store_true")    
     parser.add_argument("--save-path", type=str, help="Path to save models", default="models")
+
+    # DrivingStereo specific
+    parser.add_argument("--drivingstereo-train-images", type=str, help="Folder containing training images for DrivingStereo", default='/path/to/train/images')
+    parser.add_argument("--drivingstereo-train-depth", type=str, help="Folder containing training depth maps for DrivingStereo", default='/path/to/train/depth')
+    parser.add_argument("--drivingstereo-val-images", type=str, help="Folder containing validation images for DrivingStereo", default='/path/to/val/images')
+    parser.add_argument("--drivingstereo-val-depth", type=str, help="Folder containing validation depth maps for DrivingStereo", default='/path/to/val/depth')
 
     return parser.parse_args()
 
