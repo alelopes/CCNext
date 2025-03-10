@@ -51,7 +51,7 @@ def evaluate_model(args):
 
     height = args.height
     width = args.width
-    batch_size = args.batch_size
+    batch_size = 1
 
     device = torch.device(args.device)
 
