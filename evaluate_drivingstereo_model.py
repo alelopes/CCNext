@@ -130,17 +130,14 @@ def evaluate_model(args):
             pred_depth[pred_depth < MIN_DEPTH] = MIN_DEPTH
             pred_depth[pred_depth > MAX_DEPTH] = MAX_DEPTH
 
-            # depth_pred = torch.clamp(F.interpolate(
-            #     torch.tensor(pred_depth), [400, 881], mode="bilinear", align_corners=False), 1e-3, 120)
-            depth_pred = torch.clamp(F.interpolate(
-                torch.tensor(pred_depth), [800, 1762], mode="bilinear", align_corners=False), 1e-3, 120)
-            
-            # print("compare preds", depth_pred.shape, pred_depth.shape)
 
-            depth_pred = depth_pred[:,0,:,:]
             depth_gt = data['depth_gt'].detach().cpu()[:,0,:,:]
-
             gt_height, gt_width = depth_gt.shape[-2:]
+
+            depth_pred = torch.clamp(F.interpolate(
+                torch.tensor(pred_depth), [gt_height, gt_width], mode="bilinear", align_corners=False), 1e-3, 120)
+            
+            depth_pred = depth_pred[:,0,:,:]
             
             # if right_pad>0:
             #     depth_gt = depth_gt[:, top_pad:,:-right_pad]

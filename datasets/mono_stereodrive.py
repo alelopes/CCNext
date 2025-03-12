@@ -265,12 +265,10 @@ class MonoStereoDataset(data.Dataset):
             
             if self.is_train:
                 inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
-                # inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
             elif self.is_test:
-                inputs["depth_gt"] = torch.from_numpy(inputs["depth_gt"])
+                inputs["depth_gt"] = inputs["depth_gt"] #This is only intended for test phase. 
             else:
                 inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
-                # inputs["depth_gt"] = transforms.Resize((800, 1762))(inputs["depth_gt"])
 
 
         if "s" in self.frame_idxs:
