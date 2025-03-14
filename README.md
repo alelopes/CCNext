@@ -4,14 +4,6 @@ We present CCNeXt, a novel self-supervised convolutional approach for depth esti
 
 ![CCNeXt](images/im1.jpg)
 
-## Results
-
-![KITTI Results](images/im2.jpg)
-
-![StereoDriving Test Results](images/im3.jpg)
-
-![StereoDriving Weather Results](images/im4.jpg)
-
 ## Prerequisites
 
 - Python 3.x
@@ -30,7 +22,7 @@ We present CCNeXt, a novel self-supervised convolutional approach for depth esti
     pip install -r requirements.txt
     ```
 
-**Important:** the requirements assume that a GPU compatible with CUDA 12.1 is available.
+**Important:** The requirements assume that a GPU compatible with CUDA 12.1 is available. If you want, you can change it to the version you prefer (as long as it is a PyTorch 2.+ version). For more information on suitable versions for your GPU, visit the [PyTorch website](https://pytorch.org/get-started/previous-versions/).
 
 ## Training
 
@@ -135,6 +127,15 @@ Replace the arguments as needed:
 - `--device`: Device to run the evaluation on (e.g., `cuda:0`, `cpu`).
 - `--reduced-decoder`: Use a reduced decoder.
 - `--decoder-path`: Path to the reduced decoder file.
+
+- ## Results
+
+![KITTI Results](images/im2.jpg)
+
+![StereoDriving Test Results](images/im3.jpg)
+
+![StereoDriving Weather Results](images/im4.jpg)
+
 
 ## License
 
