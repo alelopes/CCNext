@@ -67,8 +67,8 @@ def evaluate_model(args):
     else:
         idep = models.IDEP_Skip_Dual(np.array([32, 64, 128, 256, 512]))
 
-    ccnext_enc.load_state_dict(torch.load(f"{args.model_path}/{args.encoder_path}"))
-    idep.load_state_dict(torch.load(f"{args.model_path}/{args.decoder_path}"))
+    ccnext_enc.load_state_dict(torch.load(f"{args.model_path}/{args.encoder_path}", map_location=device))
+    idep.load_state_dict(torch.load(f"{args.model_path}/{args.decoder_path}", map_location=device))
 
     ccnext_enc.eval()
     idep.eval()
@@ -117,8 +117,8 @@ def evaluate_model(args):
 
     with torch.no_grad():
         for data in dataloader:
-            input_color = data[("color", 0, 0)].cuda()
-            input_color_s = data[("color", "s", 0)].cuda()
+            input_color = data[("color", 0, 0)].to(device)
+            input_color_s = data[("color", "s", 0)].to(device)
 
             encoder_out = ccnext_enc(input_color, input_color_s)
             output = idep(encoder_out)
