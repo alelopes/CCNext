@@ -180,8 +180,8 @@ def get_parser():
     parser.add_argument('--dataset-path', type=str, required=True, help='Path to the KITTI Raw dataset')
     parser.add_argument('--model-path', type=str, required=True, help='Path to the model')
     parser.add_argument('--batch-size', type=int, default=1, help='Batch size')
-    parser.add_argument('--height', type=int, default=22, help='Image height')
-    parser.add_argument('--width', type=int, default=488, help='Image width')
+    parser.add_argument('--height', type=int, default=192*2, help='Image height')
+    parser.add_argument('--width', type=int, default=640*2, help='Image width')
     parser.add_argument('--device', type=str, default='cuda:0', help='Device to use')
     parser.add_argument('--min-depth', type=float, default=0.1, help='Minimum depth')
     parser.add_argument('--max-depth', type=float, default=100, help='Maximum depth')
@@ -195,6 +195,8 @@ def get_parser():
 def main():
     parser = get_parser()
     args = parser.parse_args()
+
+    print("KITTI eval started")
 
     evaluate_model(args)
 

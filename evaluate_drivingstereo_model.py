@@ -201,6 +201,8 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
 
+    print("DrivingStereo eval started")
+
     evaluate_model(args)
 
 if __name__ == "__main__":
