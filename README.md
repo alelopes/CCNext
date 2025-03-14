@@ -1,6 +1,16 @@
-# CCNext# Project Title
+# CCNeXt: An Effective Self-Supervised Stereo Depth Estimation Approach
 
-This project is based on the KITTI and DrivingStereo datasets. It includes scripts for training and evaluating models.
+We present CCNeXt, a novel self-supervised convolutional approach for depth estimation from stereo image pairs. Our method outperforms current state-of-the-art CNNs and Vision Transformers (ViTs), balancing computational cost and performance. CCNeXt integrates a modern CNN feature extractor with a windowed epipolar cross-attention module and a redesigned depth estimation decoder. It achieves top-tier results on the KITTI Eigen Split test data, being 10.18× faster than the best existing model, and achieve top-tier results on the DrivingStereo dataset.
+
+![CCNeXt](images/im1.jpg)
+
+## Results
+
+![KITTI Results](images/im2.jpg)
+
+![StereoDriving Test Results](images/im3.jpg)
+
+![StereoDriving Weather Results](images/im4.jpg)
 
 ## Prerequisites
 
@@ -98,9 +108,6 @@ The training set includes all training images and depth maps, which are split in
 To evaluate the model, run the `evaluate.py` script with the appropriate arguments:
 
 ```bash
-To evaluate the model for the DrivingStereo dataset, run the `evaluate_drivingstereo_model.py` script with the appropriate arguments:
-
-```bash
 python evaluate_drivingstereo_model.py --model-path <model_path> --dataset-path <dataset_path> --filenames <test_files> --drivingstereo-test-images <test_images> --drivingstereo-test-depth <test_depth> --eval-split none --window-size 0.26 --device <device> --reduced-decoder --decoder-path <decoder_path>
 ```
 
@@ -108,7 +115,6 @@ For example:
 
 ```bash
 python evaluate_drivingstereo_model.py --model-path drivingstereo_weights/ --dataset-path drivingstereo/ --filenames drivingstereo_splits/stereodrive_test.txt --drivingstereo-test-images StereoDrivingTesting/ --drivingstereo-test-depth depth_maps/test-depth-map --eval-split none --window-size 0.26 --device cuda:0 --reduced-decoder --decoder-path decoder_reduced.pt
-```
 ```
 
 To evaluate the model for the KITTI dataset, run the `evaluate_kitti_model.py` script with the appropriate arguments:
