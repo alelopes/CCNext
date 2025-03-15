@@ -1,6 +1,6 @@
 # CCNeXt: An Effective Self-Supervised Stereo Depth Estimation Approach
 
-We present CCNeXt, a novel self-supervised convolutional approach for depth estimation from stereo image pairs. Our method outperforms current state-of-the-art CNNs and Vision Transformers (ViTs), balancing computational cost and performance. CCNeXt integrates a modern CNN feature extractor with a windowed epipolar cross-attention module and a redesigned depth estimation decoder. It achieves top-tier results on the KITTI Eigen Split test data, being 10.18× faster than the best existing model, and achieve top-tier results on the DrivingStereo dataset.
+We present CCNeXt, a novel self-supervised convolutional approach for depth estimation from stereo image pairs. Our method outperforms current state-of-the-art CNNs and Vision Transformers (ViTs), balancing computational cost and performance. CCNeXt integrates a modern CNN feature extractor with a windowed epipolar cross-attention module and a redesigned depth estimation decoder. It achieves top-tier results on the KITTI Eigen Split test data, being 10.18× faster than the best existing model and achieves top-tier results on the DrivingStereo dataset.
 
 ![CCNeXt](images/im1.jpg)
 
@@ -134,6 +134,10 @@ Replace the arguments as needed:
 ## How to Cite
 
 Please, cite this work at this link:
+
+Coming Soon...
+
+## Custom dataset
 
 Coming Soon...
 
