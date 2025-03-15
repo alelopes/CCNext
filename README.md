@@ -97,6 +97,9 @@ The training set includes all training images and depth maps, which are split in
 
 ## Evaluation
 
+**The pre-trained model weights are available in the [releases section](https://github.com/alelopes/CCNext/releases) of the repository.**
+
+
 To evaluate the model, run the `evaluate.py` script with the appropriate arguments:
 
 ```bash
@@ -127,6 +130,13 @@ Replace the arguments as needed:
 - `--device`: Device to run the evaluation on (e.g., `cuda:0`, `cpu`).
 - `--reduced-decoder`: Use a reduced decoder.
 - `--decoder-path`: Path to the reduced decoder file.
+
+## How to Cite
+
+Please, cite this work at this link:
+
+Coming Soon...
+
 
 - ## Results
 
